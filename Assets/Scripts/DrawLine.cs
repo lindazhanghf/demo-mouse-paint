@@ -22,7 +22,7 @@ public class DrawLine : MonoBehaviour
     {
         if (m_lineRenderer.positionCount < 1)
         {
-            m_lineRenderer.positionCount = 1;
+            InitLineRenderer();
             m_lineRenderer.SetPosition(0, currentPos);
             return;
         }
@@ -48,10 +48,18 @@ public class DrawLine : MonoBehaviour
         EdgeCollider2D edgeCollider = m_lineColliders.gameObject.AddComponent<EdgeCollider2D>();
         edgeCollider.points = ToVector2Array(points);
         edgeCollider.isTrigger = true;
-        edgeCollider.edgeRadius = LineWidth < 0.1f ? 0.1f : LineWidth;
+        edgeCollider.edgeRadius = LineWidth/2 < 0.1f ? 0.1f : LineWidth/2;
     }
 
     #region Private Methods
+    private void InitLineRenderer()
+    {
+        m_lineRenderer.positionCount = 1;
+
+        m_lineRenderer.startWidth = LineWidth;
+        m_lineRenderer.endWidth = LineWidth;
+    }
+
     private Vector2[] ToVector2Array(Vector3[] vector3Array)
     {
         Vector2[] vector2Array = new Vector2[vector3Array.Length];
