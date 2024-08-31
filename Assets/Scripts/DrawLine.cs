@@ -30,6 +30,7 @@ public class DrawLine : MonoBehaviour
         m_lineRenderer.SetPosition(m_lineRenderer.positionCount - 1, currentPos);
 
 
+        return;
         if (m_previousColliderPos == Vector3.zero) m_previousColliderPos = currentPos;
         else if (Vector3.Distance(currentPos, m_previousColliderPos) > LineWidth * 2)
         {
@@ -39,4 +40,26 @@ public class DrawLine : MonoBehaviour
             m_previousColliderPos = currentPos;
         }
     }
+
+    public void EndDraw()
+    {
+        Vector3[] points = new Vector3[m_lineRenderer.positionCount];
+        m_lineRenderer.GetPositions(points);
+        EdgeCollider2D edgeCollider = m_lineColliders.gameObject.AddComponent<EdgeCollider2D>();
+        edgeCollider.points = ToVector2Array(points);
+        edgeCollider.isTrigger = true;
+        edgeCollider.edgeRadius = LineWidth < 0.1f ? 0.1f : LineWidth;
+    }
+
+    #region Private Methods
+    private Vector2[] ToVector2Array(Vector3[] vector3Array)
+    {
+        Vector2[] vector2Array = new Vector2[vector3Array.Length];
+        for (int i = 0; i < vector3Array.Length; i++)
+        {
+            vector2Array[i] = new Vector2(vector3Array[i].x, vector3Array[i].y);
+        }
+        return vector2Array;
+    }
+    #endregion
 }

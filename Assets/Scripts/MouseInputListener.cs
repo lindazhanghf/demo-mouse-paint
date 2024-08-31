@@ -20,6 +20,7 @@ public class MouseInputListener : MonoBehaviour
         {
             if (m_IsMouseButtonDown == true && value == false) // Button up
             {
+                m_newLine.EndDraw();
                 m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
             }
             m_IsMouseButtonDown = value;
