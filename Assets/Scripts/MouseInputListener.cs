@@ -3,12 +3,12 @@ using NaughtyAttributes;
 
 public class MouseInputListener : MonoBehaviour
 {
-	#region Editor
-	[SerializeField] [Required] private DrawLine m_linePrefab;
+    #region Editor
+    [SerializeField] [Required] private DrawLine m_linePrefab;
     public float MinDistance = 0.1f;
-	#endregion
+    #endregion
+    private Transform m_linesParent;
 
-	private Transform m_linesParent;
     [ShowNonSerializedField]
     private DrawLine m_newLine;
     private Vector3 m_previousPos;
@@ -18,8 +18,8 @@ public class MouseInputListener : MonoBehaviour
 
     private void Awake()
     {
-		var emptyParent = new GameObject("Lines");
-		m_linesParent = emptyParent.transform;
+        var emptyParent = new GameObject("Lines");
+        m_linesParent = emptyParent.transform;
 
         m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
     }
