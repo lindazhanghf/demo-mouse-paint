@@ -13,6 +13,19 @@ public class MouseInputListener : MonoBehaviour
     private DrawLine m_newLine;
     private Vector3 m_previousPos;
 
+    private bool MouseButtonDown
+    {
+        get { return m_IsMouseButtonDown; }
+        set
+        {
+            if (m_IsMouseButtonDown == true && value == false) // Button up
+            {
+                m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
+            }
+            m_IsMouseButtonDown = value;
+        }
+    }
+
     [ShowNonSerializedField]
     private bool m_IsMouseButtonDown;
 
@@ -26,8 +39,9 @@ public class MouseInputListener : MonoBehaviour
 
     private void Update()
     {
-        m_IsMouseButtonDown = Input.GetMouseButton(0);
-        if (!Input.GetMouseButton(0)) return;
+        DrawLine currLine = m_newLine;
+        MouseButtonDown = Input.GetMouseButton(0);
+        if (m_IsMouseButtonDown == false) return;
 
         Vector3 currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         currentPos.z = 0;
@@ -35,7 +49,7 @@ public class MouseInputListener : MonoBehaviour
 
         if (Vector3.Distance(currentPos, m_previousPos) > MinDistance)
         {
-            m_newLine.Draw(currentPos);
+            currLine.Draw(currentPos);
             m_previousPos = currentPos;
         }
     }
