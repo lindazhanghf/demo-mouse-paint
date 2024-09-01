@@ -3,6 +3,7 @@ using NaughtyAttributes;
 
 public class DrawLine : MonoBehaviour
 {
+    static int s_TotalLines = 0;
     public float LineWidth = 0.1f;
 
     private LineRenderer m_lineRenderer;
@@ -58,6 +59,9 @@ public class DrawLine : MonoBehaviour
 
         m_lineRenderer.startWidth = LineWidth;
         m_lineRenderer.endWidth = LineWidth;
+
+        s_TotalLines++;
+        name = "Line " + s_TotalLines;
     }
 
     private Vector2[] ToVector2Array(Vector3[] vector3Array)
