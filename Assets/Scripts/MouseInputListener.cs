@@ -15,6 +15,7 @@ public class MouseInputListener : MonoBehaviour
     private EraseLine m_eraseTool = new EraseLine();
 
     [SerializeField] private Toggle m_eraseToggle;
+    [SerializeField] private Toggle m_undoToggle;
     [ShowNonSerializedField]
     private DrawLine m_newLine;
 
@@ -56,6 +57,7 @@ public class MouseInputListener : MonoBehaviour
 
         m_currentTool = m_newLine;
         m_eraseToggle.onValueChanged.AddListener(delegate{ ToggleEraseMode(m_eraseToggle.isOn); });
+        m_undoToggle.onValueChanged.AddListener(delegate{ m_eraseTool.UndoLast(); });
     }
 
     private void Update()
