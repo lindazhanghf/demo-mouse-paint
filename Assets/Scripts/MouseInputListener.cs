@@ -9,8 +9,22 @@ public class MouseInputListener : MonoBehaviour
     #endregion
     private Transform m_linesParent;
 
+    #region Tools
+    private ITool m_currentTool;
+    private EraseLine m_eraseTool = new EraseLine();
+
     [ShowNonSerializedField]
     private DrawLine m_newLine;
+
+    [ShowNonSerializedField]
+    private bool m_eraseMode = false;
+    public void ToggleEraseMode(bool value)
+    {
+        m_eraseMode = value;
+        if (m_eraseMode) m_currentTool = m_eraseTool;
+        else m_currentTool = m_newLine;
+    }
+    #endregion
     private Vector3 m_previousPos;
 
     private bool MouseButtonDown
@@ -22,6 +36,7 @@ public class MouseInputListener : MonoBehaviour
             {
                 m_newLine.EndDraw();
                 m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
+                ToggleEraseMode(m_eraseMode); // Update current tool
             }
             m_IsMouseButtonDown = value;
         }
@@ -40,7 +55,6 @@ public class MouseInputListener : MonoBehaviour
 
     private void Update()
     {
-        DrawLine currLine = m_newLine;
         MouseButtonDown = Input.GetMouseButton(0);
         if (m_IsMouseButtonDown == false) return;
 
@@ -50,7 +64,7 @@ public class MouseInputListener : MonoBehaviour
 
         if (Vector3.Distance(currentPos, m_previousPos) > MinDistance)
         {
-            currLine.Draw(currentPos);
+            m_currentTool.Draw(currentPos);
             m_previousPos = currentPos;
         }
     }
