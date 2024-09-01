@@ -78,8 +78,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -151,3 +150,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c2195a5ccf24d418de630c85d8b9ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LineWidth: 0.1
