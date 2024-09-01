@@ -1,7 +1,7 @@
 using UnityEngine;
 using NaughtyAttributes;
 
-public class DrawLine : MonoBehaviour
+public class DrawLine : MonoBehaviour, ITool
 {
     static int s_TotalLines = 0;
     public float LineWidth = 0.1f;
