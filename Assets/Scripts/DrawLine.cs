@@ -3,6 +3,9 @@ using NaughtyAttributes;
 
 public class DrawLine : MonoBehaviour, ITool
 {
+    private const float CANVAS_LIMIT_X = 10 / 2;
+    private const float CANVAS_LIMIT_Y = 9 / 2;
+
     static int s_TotalLines = 0;
     public float LineWidth = 0.1f;
 
@@ -21,6 +24,9 @@ public class DrawLine : MonoBehaviour, ITool
 
     public void Draw(Vector3 currentPos)
     {
+        if (currentPos.x < -CANVAS_LIMIT_X || currentPos.x > CANVAS_LIMIT_X
+            || currentPos.y < -CANVAS_LIMIT_Y || currentPos.y > CANVAS_LIMIT_Y) return;
+
         if (m_lineRenderer.positionCount < 1)
         {
             InitLineRenderer(currentPos);
