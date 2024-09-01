@@ -1,5 +1,6 @@
 using UnityEngine;
 using NaughtyAttributes;
+using UnityEngine.UI;
 
 public class MouseInputListener : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class MouseInputListener : MonoBehaviour
     private ITool m_currentTool;
     private EraseLine m_eraseTool = new EraseLine();
 
+    [SerializeField] private Toggle m_eraseToggle;
     [ShowNonSerializedField]
     private DrawLine m_newLine;
 
@@ -51,6 +53,9 @@ public class MouseInputListener : MonoBehaviour
         m_linesParent = emptyParent.transform;
 
         m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
+
+        m_currentTool = m_newLine;
+        m_eraseToggle.onValueChanged.AddListener(delegate{ ToggleEraseMode(m_eraseToggle.isOn); });
     }
 
     private void Update()
