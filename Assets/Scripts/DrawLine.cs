@@ -23,8 +23,7 @@ public class DrawLine : MonoBehaviour, ITool
     {
         if (m_lineRenderer.positionCount < 1)
         {
-            InitLineRenderer();
-            m_lineRenderer.SetPosition(0, currentPos);
+            InitLineRenderer(currentPos);
             return;
         }
         m_lineRenderer.positionCount++;
@@ -53,9 +52,10 @@ public class DrawLine : MonoBehaviour, ITool
     }
 
     #region Private Methods
-    private void InitLineRenderer()
+    private void InitLineRenderer(Vector3 firstPoint)
     {
         m_lineRenderer.positionCount = 1;
+        m_lineRenderer.SetPosition(0, firstPoint);
 
         m_lineRenderer.startWidth = LineWidth;
         m_lineRenderer.endWidth = LineWidth;
