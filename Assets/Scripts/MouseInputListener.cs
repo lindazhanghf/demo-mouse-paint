@@ -34,7 +34,7 @@ public class MouseInputListener : MonoBehaviour
         get { return m_IsMouseButtonDown; }
         set
         {
-            if (m_IsMouseButtonDown == true && value == false) // Button up
+            if (!m_eraseMode && m_IsMouseButtonDown == true && value == false) // Button up
             {
                 m_newLine.EndDraw();
                 m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
