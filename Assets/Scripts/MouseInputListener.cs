@@ -13,19 +13,22 @@ public class MouseInputListener : MonoBehaviour
     #region Tools
     private ITool m_currentTool;
     private EraseLine m_eraseTool = new EraseLine();
+    private FillTool m_fillTool = new FillTool();
 
     [SerializeField] private Toggle m_eraseToggle;
     [SerializeField] private Toggle m_undoToggle;
+    [SerializeField] private Toggle m_fillToggle;
     [ShowNonSerializedField]
     private DrawLine m_newLine;
 
     [ShowNonSerializedField]
-    private bool m_eraseMode = false;
-    public void ToggleEraseMode(bool value)
+    private int m_currentToolMode = 1;
+    public void SetTool(int value)
     {
-        m_eraseMode = value;
-        if (m_eraseMode) m_currentTool = m_eraseTool;
-        else m_currentTool = m_newLine;
+        m_currentToolMode = value;
+        if (value == 0) m_currentTool = m_eraseTool;
+        if (value == 1) m_currentTool = m_newLine;
+        if (value == 2) m_currentTool = m_fillTool;
     }
     #endregion
     private Vector3 m_previousPos;
@@ -35,11 +38,14 @@ public class MouseInputListener : MonoBehaviour
         get { return m_IsMouseButtonDown; }
         set
         {
-            if (!m_eraseMode && m_IsMouseButtonDown == true && value == false) // Button up
+            if (m_IsMouseButtonDown && !value) // Button up
             {
-                m_newLine.EndDraw();
-                m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
-                ToggleEraseMode(m_eraseMode); // Update current tool
+                m_currentTool.EndDraw();
+                if (m_currentToolMode == 1)
+                {
+                    m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
+                    m_currentTool = m_newLine; // Update current tool
+                }
             }
             m_IsMouseButtonDown = value;
         }
@@ -56,8 +62,12 @@ public class MouseInputListener : MonoBehaviour
         m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
 
         m_currentTool = m_newLine;
-        m_eraseToggle.onValueChanged.AddListener(delegate{ ToggleEraseMode(m_eraseToggle.isOn); });
+        m_eraseToggle.onValueChanged.AddListener(delegate{
+            if (m_eraseToggle.isOn) SetTool(0);
+            else SetTool(1);
+        });
         m_undoToggle.onValueChanged.AddListener(delegate{ m_eraseTool.UndoLast(); });
+        m_fillToggle.onValueChanged.AddListener(delegate{ SetTool(2); });
     }
 
     private void Update()
