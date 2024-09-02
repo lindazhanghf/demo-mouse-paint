@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class FillTool : ITool
 {
-    private const float CANVAS_LIMIT_X = 10 / 2;
-    private const float CANVAS_LIMIT_Y = 9 / 2;
     private Vector3 m_previousPos;
 
     public void Draw(Vector3 currentPos)
@@ -14,8 +12,7 @@ public class FillTool : ITool
     }
     public void EndDraw()
     {
-        if (m_previousPos.x < -CANVAS_LIMIT_X || m_previousPos.x > CANVAS_LIMIT_X
-            || m_previousPos.y < -CANVAS_LIMIT_Y || m_previousPos.y > CANVAS_LIMIT_Y) return;
+        if (Util.OutOfBound(m_previousPos)) return;
 
         DrawLine found = FindClosestLine(m_previousPos);
         if (found == null) return;

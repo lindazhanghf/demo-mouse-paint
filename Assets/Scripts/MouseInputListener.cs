@@ -38,6 +38,8 @@ public class MouseInputListener : MonoBehaviour
         get { return m_IsMouseButtonDown; }
         set
         {
+            if (Util.OutOfBound(Camera.main.ScreenToWorldPoint(Input.mousePosition))) return;
+
             if (m_IsMouseButtonDown && !value) // Button up
             {
                 m_currentTool.EndDraw();
