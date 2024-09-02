@@ -3,12 +3,15 @@ using NaughtyAttributes;
 
 public class DrawLine : MonoBehaviour, ITool
 {
+    public int LineID;
+
     private const float CANVAS_LIMIT_X = 10 / 2;
     private const float CANVAS_LIMIT_Y = 9 / 2;
 
     static int s_TotalLines = 0;
     public float LineWidth = 0.1f;
 
+    public LineRenderer Line { get => m_lineRenderer; }
     private LineRenderer m_lineRenderer;
     private Transform m_lineColliders;
     private Vector3 m_previousColliderPos;
@@ -66,8 +69,8 @@ public class DrawLine : MonoBehaviour, ITool
         m_lineRenderer.startWidth = LineWidth;
         m_lineRenderer.endWidth = LineWidth;
 
-        s_TotalLines++;
-        name = "Line " + s_TotalLines;
+        LineID = s_TotalLines++;
+        name = "Line " + LineID;
     }
 
     private Vector2[] ToVector2Array(Vector3[] vector3Array)
