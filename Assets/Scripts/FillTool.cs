@@ -1,5 +1,6 @@
 using UnityEngine;
 using NaughtyAttributes;
+using System.Collections.Generic;
 
 public class FillTool : ITool
 {
@@ -17,7 +18,10 @@ public class FillTool : ITool
             || m_previousPos.y < -CANVAS_LIMIT_Y || m_previousPos.y > CANVAS_LIMIT_Y) return;
 
         DrawLine found = FindClosestLine(m_previousPos);
-        if (found != null) found.GetComponent<LineRenderer>().endColor = Color.red;
+        if (found == null) return;
+        Vector3[] points = new Vector3[found.Line.positionCount];
+        found.Line.GetPositions(points);
+        CreateMesh(points);
     }
 
     private DrawLine FindClosestLine(Vector3 startPos)
@@ -45,5 +49,30 @@ public class FillTool : ITool
         {
             return collided[0].transform.GetComponentInParent<DrawLine>();
         }
+    }
+    private void CreateMesh(Vector3[] vertices)
+    {
+        FillID = s_TotalFills++;
+        GameObject meshObject = new GameObject("FilledMesh " + FillID);
+        MeshFilter meshFilter = meshObject.AddComponent<MeshFilter>();
+        MeshRenderer meshRenderer = meshObject.AddComponent<MeshRenderer>();
+
+        Mesh mesh = new Mesh();
+        mesh.vertices = vertices;
+
+        List<int> triangles = new List<int>();
+        for (int i = 1; i < vertices.Length - 1; i++)
+        {
+            triangles.Add(0);
+            triangles.Add(i);
+            triangles.Add(i + 1);
+        }
+
+        mesh.triangles = triangles.ToArray();
+        mesh.RecalculateNormals();
+
+        meshFilter.mesh = mesh;
+        meshRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        meshRenderer.material.color = Color.red;
     }
 }
