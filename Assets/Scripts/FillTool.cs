@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class FillTool : ITool
 {
+    static int s_TotalFills = 0;
+    public int FillID;
+
     private Vector3 m_previousPos;
 
     public void Draw(Vector3 currentPos)
