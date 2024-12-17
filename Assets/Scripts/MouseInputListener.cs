@@ -15,9 +15,10 @@ public class MouseInputListener : MonoBehaviour
     private EraseLine m_eraseTool = new EraseLine();
     private FillTool m_fillTool = new FillTool();
 
-    [SerializeField] private Toggle m_eraseToggle;
-    [SerializeField] private Toggle m_undoToggle;
-    [SerializeField] private Toggle m_fillToggle;
+    [SerializeField] private Button m_eraseButton;
+    [SerializeField] private Button m_drawButton;
+    [SerializeField] private Button m_undoButton;
+    [SerializeField] private Button m_fillButton;
     [ShowNonSerializedField]
     private DrawLine m_newLine;
 
@@ -64,12 +65,10 @@ public class MouseInputListener : MonoBehaviour
         m_newLine = Instantiate(m_linePrefab, m_linesParent, false);
 
         m_currentTool = m_newLine;
-        m_eraseToggle.onValueChanged.AddListener(delegate{
-            if (m_eraseToggle.isOn) SetTool(0);
-            else SetTool(1);
-        });
-        m_undoToggle.onValueChanged.AddListener(delegate{ m_eraseTool.UndoLast(); });
-        m_fillToggle.onValueChanged.AddListener(delegate{ SetTool(2); });
+        m_eraseButton.onClick.AddListener(delegate{ SetTool(0); });
+        m_drawButton.onClick.AddListener(delegate{ SetTool(1); });
+        m_undoButton.onClick.AddListener(delegate{ m_eraseTool.UndoLast(); });
+        m_fillButton.onClick.AddListener(delegate{ SetTool(2); });
     }
 
     private void Update()
